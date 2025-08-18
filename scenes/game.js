@@ -4,10 +4,10 @@ export default class game extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("fondo", "/public/assets/fondo.png");
-    this.load.image("bloque", "/public/assets/bloque.png");
-    this.load.image("pelota", "/public/assets/pelota.png");
-    this.load.image("jugador", "/public/assets/plataforma.png");
+    this.load.image("fondo", "public/assets/fondo.png");
+    this.load.image("bloque", "public/assets/bloque.png");
+    this.load.image("pelota", "public/assets/pelota.png");
+    this.load.image("jugador", "public/assets/plataforma.png");
   }
 
   create() {
