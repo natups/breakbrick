@@ -15,7 +15,9 @@ export default class game extends Phaser.Scene {
     this.add.image(400, 300, "fondo");
 
     // Plataforma del jugador
-    this.player = this.physics.add.staticSprite(240, 550, "jugador").setScale(0.3);
+    this.player = this.physics.add
+      .staticSprite(240, 550, "jugador")
+      .setScale(0.3);
     this.player.refreshBody();
 
     // Teclas
@@ -49,7 +51,9 @@ export default class game extends Phaser.Scene {
       for (let row = 0; row < 4; row++) {
         let bloqueX = 120 + col * 90;
         let bloqueY = 70 + row * 40;
-        let bloque = this.bloques.create(bloqueX, bloqueY, "bloque").setScale(0.2);
+        let bloque = this.bloques
+          .create(bloqueX, bloqueY, "bloque")
+          .setScale(0.2);
         bloque.refreshBody();
       }
     }
@@ -69,15 +73,6 @@ export default class game extends Phaser.Scene {
   }
 
   update() {
-    // Movimiento de la plataforma
-    if (this.cursors.left.isDown) {
-      this.player.x -= 5;
-      if (this.player.x < this.player.displayWidth / 2) this.player.x = this.player.displayWidth / 2;
-      this.player.refreshBody();
-    } else if (this.cursors.right.isDown) {
-      this.player.x += 5;
-      if (this.player.x > 800 - this.player.displayWidth / 2) this.player.x = 800 - this.player.displayWidth / 2;
-      this.player.refreshBody();
-    }
+    this.player.update();
   }
 }
