@@ -1,3 +1,7 @@
+import Player from "../classes/Player.js";
+import Ball from "../classes/Ball.js";
+import Blocks from "../classes/Blocks.js";
+
 export default class game extends Phaser.Scene {
   constructor() {
     super("game");
@@ -14,62 +18,19 @@ export default class game extends Phaser.Scene {
     // Fondo
     this.add.image(400, 300, "fondo");
 
-    // Plataforma del jugador
-    this.player = this.physics.add
-      .staticSprite(240, 550, "jugador")
-      .setScale(0.3);
-    this.player.refreshBody();
-
     // Teclas
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    // Pelota
-    this.ball = this.physics.add.sprite(400, 500, "pelota").setScale(0.03);
-    this.ball.setCollideWorldBounds(true);
-    this.ball.setBounce(1);
-    this.ball.setVelocity(150, -150);
+    // Creo objetos usando las clases
+    this.player = new Player(this, 240, 550, this.cursors);
+    this.ball = new Ball(this, 400, 500);
+    this.blocks = new Blocks(this);
 
-    // Habilitar detección de colisión con bordes
-    this.ball.body.onWorldBounds = true;
-    this.physics.world.on("worldbounds", (body, up, down, left, right) => {
-      if (body.gameObject === this.ball && down) {
-        // Desaparece la pelota y reiníciala
-        this.ball.setActive(false);
-        this.ball.setVisible(false);
-        this.time.delayedCall(500, () => {
-          this.resetBall();
-        });
-      }
-    });
-
-    // Colisión pelota - plataforma
+    // Colisiones
     this.physics.add.collider(this.ball, this.player);
-
-    // Bloques
-    this.bloques = this.physics.add.staticGroup();
-    for (let col = 0; col < 7; col++) {
-      for (let row = 0; row < 4; row++) {
-        let bloqueX = 120 + col * 90;
-        let bloqueY = 70 + row * 40;
-        let bloque = this.bloques
-          .create(bloqueX, bloqueY, "bloque")
-          .setScale(0.2);
-        bloque.refreshBody();
-      }
-    }
-
-    // Colisión pelota - bloques
-    this.physics.add.collider(this.ball, this.bloques, (ball, bloque) => {
+    this.physics.add.collider(this.ball, this.blocks, (ball, bloque) => {
       bloque.destroy();
     });
-  }
-
-  resetBall() {
-    // Reinicia la pelota al centro
-    this.ball.setPosition(400, 500);
-    this.ball.setVelocity(150, -150);
-    this.ball.setActive(true);
-    this.ball.setVisible(true);
   }
 
   update() {

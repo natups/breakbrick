@@ -2,6 +2,7 @@ export default class Blocks extends Phaser.Physics.Arcade.StaticGroup {
   constructor(scene) {
     super(scene.physics.world, scene);
     this.scene = scene;
+    this.scene.add.existing(this);
     this.createBlocks();
   }
 
